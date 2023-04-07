@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLSVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LSH">
+    <Key>
+      <PropertyRef Name="IDLop" />
+    </Key>
+    <Property Name="IDLop" Type="Int32" Nullable="false" />
+    <Property Name="NameLop" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SVs" Relationship="Self.FK_SV_LSH" FromRole="LSH" ToRole="SV" />
+  </EntityType>
+  <EntityType Name="SV">
+    <Key>
+      <PropertyRef Name="MSSV" />
+    </Key>
+    <Property Name="MSSV" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ID_Lop" Type="Int32" Nullable="false" />
+    <Property Name="NS" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DTB" Type="Double" Nullable="false" />
+    <Property Name="Gender" Type="Boolean" Nullable="false" />
+    <Property Name="Anh" Type="Boolean" Nullable="false" />
+    <Property Name="HocBa" Type="Boolean" Nullable="false" />
+    <Property Name="CCCD" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="LSH" Relationship="Self.FK_SV_LSH" FromRole="SV" ToRole="LSH" />
+  </EntityType>
+  <Association Name="FK_SV_LSH">
+    <End Role="LSH" Type="Self.LSH" Multiplicity="1" />
+    <End Role="SV" Type="Self.SV" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LSH">
+        <PropertyRef Name="IDLop" />
+      </Principal>
+      <Dependent Role="SV">
+        <PropertyRef Name="ID_Lop" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLSVDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LSHes" EntityType="Self.LSH" />
+    <EntitySet Name="SVs" EntityType="Self.SV" />
+    <AssociationSet Name="FK_SV_LSH" Association="Self.FK_SV_LSH">
+      <End Role="LSH" EntitySet="LSHes" />
+      <End Role="SV" EntitySet="SVs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
